@@ -1,0 +1,13 @@
+{
+  "app": {
+    "name": "AppCreator",
+    "subtitle": "AI Mobilapp-bygger"
+  },
+  "button": {
+    "getStarted": "Kom i gang",
+    "cancel": "Avbryt",
+    "save": "Lagre",
+    "delete": "Slett",
+    "edit": "Rediger"
+  }
+}

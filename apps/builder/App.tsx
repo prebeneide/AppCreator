@@ -1,10 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useTheme, useIsDark } from '@appcreator/design-system';
 import { GlassCard, GlassButton, GlassHeader } from '@appcreator/design-system';
 import { spacing } from '@appcreator/design-system';
 
 export default function App() {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isDark = useIsDark();
 
@@ -13,11 +15,11 @@ export default function App() {
       style={[styles.container, { backgroundColor: theme.background.primary }]}
     >
       <StatusBar style={isDark ? 'light' : 'dark'} />
-      <GlassHeader title="AppCreator" subtitle="AI Mobile App Builder" />
+      <GlassHeader title={t('app.name')} subtitle={t('app.subtitle')} />
       <View style={styles.content}>
         <GlassCard style={styles.card}>
           <GlassButton
-            title="Get Started"
+            title={t('button.getStarted')}
             onPress={() => console.log('Pressed')}
             variant="primary"
           />
