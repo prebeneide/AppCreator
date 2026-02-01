@@ -4,6 +4,9 @@
 
 Vi bygger en React Native + Expo app som lar brukere lage produksjonsklare mobilapper via chat med AI. Systemet skal ha live preview, autofix, og en komplett publishing pipeline.
 
+**Se også:**
+- `.internal/AGENT_ARCHITECTURE.md` - Detaljert spesifikasjon av AI agent, terminal/logg system, og context management
+
 ---
 
 ## Phase 1: Foundation & Core Infrastructure
@@ -28,6 +31,11 @@ Vi bygger en React Native + Expo app som lar brukere lage produksjonsklare mobil
 - [ ] Chat interface (message bubbles, input, typing indicators)
 - [ ] Live preview container (iframe/webview for web preview)
 - [ ] Tab navigation (Chat, Preview, Features, Issues, Publish, Projects)
+- [ ] Terminal/Log viewer (hidden by default, accessible via settings)
+  - Real-time log streaming
+  - Color coding (errors, success, info)
+  - Filtering and search
+  - Export functionality
 - [ ] Loading states and skeletons
 - [ ] Error boundaries and error displays
 - [ ] Toast/notification system
@@ -44,15 +52,19 @@ Vi bygger en React Native + Expo app som lar brukere lage produksjonsklare mobil
 ## Phase 2: Backend & Infrastructure
 
 ### 2.1 Supabase Setup
-- [ ] Supabase project initialization script
+- [ ] Supabase Management API integration (for automated project creation)
+- [ ] Supabase CLI integration (for migrations, storage, etc.)
+- [ ] Automated project initialization (create project, get API keys)
 - [ ] Database schema for:
   - Users (auth handled by Supabase Auth)
-  - Projects (metadata, config, status)
+  - Projects (metadata, config, status, context summaries)
   - Builds (history, logs, artifacts)
   - Agent actions (audit log)
+  - Terminal logs (for user projects)
 - [ ] Storage buckets setup (project assets, builds)
 - [ ] RLS policies templates
 - [ ] Edge functions structure
+- [ ] Automated migration system (create tables, alter schema via AI)
 
 ### 2.2 Authentication
 - [ ] Supabase Auth integration
@@ -77,21 +89,47 @@ Vi bygger en React Native + Expo app som lar brukere lage produksjonsklare mobil
 
 ## Phase 3: AI Agent & Orchestration
 
-### 3.1 Agent Core
+### 3.1 Agent Orchestrator (Backend Service)
+- [ ] Set up Node.js backend service (apps/orchestrator)
+- [ ] WebSocket server for real-time communication
+- [ ] HTTP API fallback
+- [ ] Project isolation and sandboxing
+- [ ] Command execution system with allowlist
+- [ ] Resource limits and timeout handling
+
+### 3.2 Terminal/Logg System
+- [ ] Backend logger (logs all commands, output, file changes)
+- [ ] Real-time log streaming to frontend
+- [ ] Frontend terminal/log viewer (hidden by default, accessible via settings)
+- [ ] Log filtering (errors, commands, info)
+- [ ] Log export functionality
+- [ ] Search in logs
+- [ ] Color coding (error=red, success=green, etc.)
+
+### 3.3 Context Management
+- [ ] Session context (recent messages, recent changes)
+- [ ] Project context (structure, modules, config) - stored in DB
+- [ ] Summary context (compressed project summary)
+- [ ] Context window management (token limits, prioritization)
+- [ ] Context summarization (compress old data)
+- [ ] Smart context building for AI requests
+
+### 3.4 Agent Core
 - [ ] AI client integration (OpenAI/Anthropic)
 - [ ] Prompt engineering system
-- [ ] Context management (token limits, summarization)
 - [ ] Task planning (break down user requests into steps)
 - [ ] Code generation with templates/modules
+- [ ] Step-by-step execution with progress updates
 
-### 3.2 Code Modification System
+### 3.5 Code Modification System
 - [ ] AST parsing and manipulation
 - [ ] Diff-based patching system
 - [ ] File system operations (create, update, delete)
 - [ ] Template system for modules/capabilities
 - [ ] Code validation before applying changes
+- [ ] Log all file changes to terminal
 
-### 3.3 Autofix Loop
+### 3.6 Autofix Loop
 - [ ] Error detection (lint, tests, build, runtime)
 - [ ] Error categorization and signature matching
 - [ ] Fix playbooks (strategies for common errors)
@@ -100,7 +138,7 @@ Vi bygger en React Native + Expo app som lar brukere lage produksjonsklare mobil
 - [ ] Rollback mechanism
 - [ ] User choice prompts (A/B/C options when stuck)
 
-### 3.4 Module System
+### 3.7 Module System
 - [ ] Module registry (Auth, Chat, CRUD, Feed, Booking, Marketplace, etc.)
 - [ ] Module templates with customization points
 - [ ] Module dependencies and conflicts
