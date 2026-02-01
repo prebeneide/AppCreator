@@ -1,18 +1,40 @@
 # Development Rules & Guidelines
 
-## Core Principle: Mini-Steps Always
+## Core Principle: Extremely Mini-Steps Always
 
-### Rule 1: Atomic Changes
-- **One logical change per commit**
-- Never combine unrelated features
-- Test after each step before proceeding
-- If a change breaks something, it's easier to identify and fix
+### Rule 1: Extremely Small Steps
+- **ONE tiny change at a time** - the smallest possible unit
+- **One file, one function, one feature** - never combine
+- **Test immediately** after each tiny change
+- If you can break it down further, do it
+- Examples of good mini-steps:
+  - Create empty file
+  - Add one import
+  - Add one function signature (no implementation)
+  - Add one prop to interface
+  - Implement one line of logic
+  - Test that one change
+  - Then move to next tiny step
 
 ### Rule 2: Maximum Step Size
-- **One file at a time** when possible
-- **One component** per implementation
-- **One function** per logical operation
-- If a change touches multiple files, ensure each file change is atomic
+- **One file at a time** - always
+- **One function/method at a time** - never multiple
+- **One prop/interface change at a time**
+- **One import at a time** if adding multiple
+- If a change touches multiple files, do ONE file, test, then next file
+
+### Rule 2.1: Break Down Every Task
+- Before starting any task, break it into the smallest possible steps
+- Write down the mini-steps if needed
+- Do ONE mini-step, test, then next
+- Never do "create component with all features" - do:
+  1. Create empty component file
+  2. Add basic structure
+  3. Add one prop
+  4. Test
+  5. Add next prop
+  6. Test
+  7. etc.
 
 ### Rule 3: Test and Run App After Every Step
 - **Mandatory**: After every code change, run the app and verify it works
