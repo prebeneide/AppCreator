@@ -9,5 +9,9 @@
     "save": "Lagre",
     "delete": "Slett",
     "edit": "Rediger"
+  },
+  "language": {
+    "en": "Engelsk",
+    "nb": "Norsk"
   }
 }
