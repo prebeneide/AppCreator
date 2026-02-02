@@ -92,6 +92,7 @@ export function GlassButton({
             overflow: 'hidden',
           },
         ]}
+        pointerEvents="none"
       />
       {loading ? (
         <ActivityIndicator

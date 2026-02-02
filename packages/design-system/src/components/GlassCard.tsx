@@ -41,6 +41,7 @@ export function GlassCard({
             overflow: 'hidden',
           },
         ]}
+        pointerEvents="none"
       />
       <View style={styles.content}>{children}</View>
     </View>
