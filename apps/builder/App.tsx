@@ -17,13 +17,11 @@ export default function App() {
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <GlassHeader title={t('app.name')} subtitle={t('app.subtitle')} />
       <View style={styles.content}>
-        <GlassCard style={styles.card}>
-          <GlassButton
-            title={t('button.getStarted')}
-            onPress={() => console.log('Pressed')}
-            variant="primary"
-          />
-        </GlassCard>
+        <GlassButton
+          title={t('button.getStarted')}
+          onPress={() => console.log('Pressed')}
+          variant="primary"
+        />
       </View>
     </View>
   );

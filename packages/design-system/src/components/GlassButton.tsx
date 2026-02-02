@@ -100,7 +100,9 @@ export function GlassButton({
           color={variant === 'primary' ? theme.accent.primary : theme.text.primary}
         />
       ) : (
-        <Text style={[styles.text, getTextStyle(), textStyle]}>{title}</Text>
+        <Text style={[styles.text, getTextStyle(), { zIndex: 1 }, textStyle]}>
+          {title}
+        </Text>
       )}
     </TouchableOpacity>
   );
