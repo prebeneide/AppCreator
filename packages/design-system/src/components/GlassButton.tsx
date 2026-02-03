@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  View,
   TouchableOpacity,
   Text,
   StyleSheet,
@@ -77,12 +78,7 @@ export function GlassButton({
   };
 
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      disabled={disabled || loading}
-      activeOpacity={0.7}
-      style={[getButtonStyle(), disabled && { opacity: 0.5 }, style]}
-    >
+    <View style={[getButtonStyle(), disabled && { opacity: 0.5 }, style]}>
       <BlurView
         intensity={15}
         style={[
@@ -94,17 +90,23 @@ export function GlassButton({
         ]}
         pointerEvents="none"
       />
-      {loading ? (
-        <ActivityIndicator
-          size="small"
-          color={variant === 'primary' ? theme.accent.primary : theme.text.primary}
-        />
-      ) : (
-        <Text style={[styles.text, getTextStyle(), { zIndex: 1 }, textStyle]}>
-          {title}
-        </Text>
-      )}
-    </TouchableOpacity>
+      <TouchableOpacity
+        onPress={onPress}
+        disabled={disabled || loading}
+        activeOpacity={0.7}
+        style={StyleSheet.absoluteFill}
+      >
+        {loading ? (
+          <ActivityIndicator
+            size="small"
+            color={variant === 'primary' ? theme.accent.primary : theme.text.primary}
+            style={styles.loader}
+          />
+        ) : (
+          <Text style={[styles.text, getTextStyle(), textStyle]}>{title}</Text>
+        )}
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -112,6 +114,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: typography.fontSize.base,
     fontWeight: typography.fontWeight.medium,
+    textAlign: 'center',
+  },
+  loader: {
+    alignSelf: 'center',
+    marginTop: 'auto',
+    marginBottom: 'auto',
   },
 });
 

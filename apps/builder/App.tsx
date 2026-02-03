@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme, useIsDark } from '@appcreator/design-system';
-import { GlassCard, GlassButton, GlassHeader } from '@appcreator/design-system';
+import { GlassButton, GlassHeader } from '@appcreator/design-system';
 import { spacing } from '@appcreator/design-system';
 
 export default function App() {
@@ -19,7 +19,7 @@ export default function App() {
       <View style={styles.content}>
         <GlassButton
           title={t('button.getStarted')}
-          onPress={() => console.log('Pressed')}
+          onPress={() => Alert.alert('Test', 'Button pressed!')}
           variant="primary"
         />
       </View>
