@@ -94,13 +94,12 @@ export function GlassButton({
         onPress={onPress}
         disabled={disabled || loading}
         activeOpacity={0.7}
-        style={StyleSheet.absoluteFill}
+        style={[StyleSheet.absoluteFill, styles.touchable]}
       >
         {loading ? (
           <ActivityIndicator
             size="small"
             color={variant === 'primary' ? theme.accent.primary : theme.text.primary}
-            style={styles.loader}
           />
         ) : (
           <Text style={[styles.text, getTextStyle(), textStyle]}>{title}</Text>
@@ -111,15 +110,14 @@ export function GlassButton({
 }
 
 const styles = StyleSheet.create({
+  touchable: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   text: {
     fontSize: typography.fontSize.base,
     fontWeight: typography.fontWeight.medium,
     textAlign: 'center',
-  },
-  loader: {
-    alignSelf: 'center',
-    marginTop: 'auto',
-    marginBottom: 'auto',
   },
 });
 
