@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme, useIsDark } from '../utils/useTheme';
 import { spacing, radius, typography } from '../tokens';
 
@@ -32,6 +33,7 @@ export function GlassButton({
   textStyle,
 }: GlassButtonProps) {
   const theme = useTheme();
+  const isDark = useIsDark();
 
   const getButtonStyle = (): ViewStyle => {
     const base: ViewStyle = {
@@ -69,7 +71,7 @@ export function GlassButton({
 
   const getTextStyle = (): TextStyle => {
     if (variant === 'primary') {
-      return { color: theme.accent.primary };
+      return { color: '#FFFFFF' };
     }
     if (variant === 'outline') {
       return { color: theme.accent.secondary };
@@ -77,42 +79,79 @@ export function GlassButton({
     return { color: theme.text.primary };
   };
 
+  const gradientColors =
+    variant === 'primary'
+      ? (['#FF6B9D', '#FF8E53', '#C084FC', '#00D4FF'] as const)
+      : (['#3B82F6', '#8B5CF6', '#EC4899'] as const);
+
   return (
-    <View style={[getButtonStyle(), disabled && { opacity: 0.5 }, style]}>
-      <BlurView
-        intensity={15}
-        style={[
-          StyleSheet.absoluteFill,
-          {
-            borderRadius: radius.md,
-            overflow: 'hidden',
-          },
-        ]}
-        pointerEvents="none"
-      />
-      <TouchableOpacity
-        onPress={onPress}
-        disabled={disabled || loading}
-        activeOpacity={0.7}
-        style={[StyleSheet.absoluteFill, styles.touchable]}
+    <View style={[styles.wrapper, disabled && { opacity: 0.5 }, style]}>
+      <LinearGradient
+        colors={[...gradientColors]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={[styles.gradientBorder, { borderRadius: radius.md }]}
       >
-        {loading ? (
-          <ActivityIndicator
-            size="small"
-            color={variant === 'primary' ? theme.accent.primary : theme.text.primary}
+        <View
+          style={[
+            styles.innerContainer,
+            {
+              borderRadius: radius.md - 1,
+              backgroundColor: isDark
+                ? 'rgba(0, 0, 0, 0.3)'
+                : 'rgba(255, 255, 255, 0.2)',
+            },
+          ]}
+        >
+          <BlurView
+            intensity={isDark ? 20 : 30}
+            tint={isDark ? 'dark' : 'light'}
+            style={[
+              StyleSheet.absoluteFill,
+              {
+                borderRadius: radius.md - 1,
+                overflow: 'hidden',
+              },
+            ]}
+            pointerEvents="none"
           />
-        ) : (
-          <Text style={[styles.text, getTextStyle(), textStyle]}>{title}</Text>
-        )}
-      </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onPress}
+            disabled={disabled || loading}
+            activeOpacity={0.7}
+            style={[StyleSheet.absoluteFill, styles.touchable]}
+          >
+            {loading ? (
+              <ActivityIndicator
+                size="small"
+                color={variant === 'primary' ? '#00D4FF' : theme.text.primary}
+              />
+            ) : (
+              <Text style={[styles.text, getTextStyle(), textStyle]}>{title}</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    minHeight: 44,
+  },
+  gradientBorder: {
+    padding: 1.5,
+  },
+  innerContainer: {
+    minHeight: 42,
+    overflow: 'hidden',
+  },
   touchable: {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: spacing[3],
+    paddingHorizontal: spacing[4],
   },
   text: {
     fontSize: typography.fontSize.base,
