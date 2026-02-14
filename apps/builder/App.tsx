@@ -1,15 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { useTheme } from '@appcreator/design-system';
 
 export default function App() {
   const theme = useTheme();
   return (
-    <NavigationContainer>
-      <View style={[styles.container, { backgroundColor: theme.background.primary }]}>
-        <Text style={[styles.text, { color: theme.accent.primary }]}>AppCreator</Text>
-      </View>
-    </NavigationContainer>
+    <View style={[styles.container, { backgroundColor: theme.background.primary }]}>
+      <Text style={[styles.text, { color: theme.accent.primary }]}>AppCreator</Text>
+    </View>
   );
 }
 
