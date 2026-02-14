@@ -1,5 +1,13 @@
-import AppNavigator from './src/navigation/AppNavigator';
+import { View, StyleSheet } from 'react-native';
+import { useTheme } from '@appcreator/design-system';
 
 export default function App() {
-  return <AppNavigator />;
+  const theme = useTheme();
+  return <View style={[styles.container, { backgroundColor: theme.background.primary }]} />;
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

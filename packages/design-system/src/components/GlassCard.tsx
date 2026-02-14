@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ViewStyle, StyleSheet } from 'react-native';
-import { BlurView } from 'expo-blur';
+// import { BlurView } from 'expo-blur';
 import { useTheme } from '../utils/useTheme';
 import { spacing, radius, elevation } from '../tokens';
 
@@ -32,17 +32,6 @@ export function GlassCard({
         style,
       ]}
     >
-      <BlurView
-        intensity={intensity}
-        style={[
-          StyleSheet.absoluteFill,
-          {
-            borderRadius: radius[borderRadius],
-            overflow: 'hidden',
-          },
-        ]}
-        pointerEvents="none"
-      />
       <View style={styles.content}>{children}</View>
     </View>
   );
