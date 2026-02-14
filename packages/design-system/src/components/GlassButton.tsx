@@ -113,7 +113,6 @@ export function GlassButton({
                 overflow: 'hidden',
               },
             ]}
-            pointerEvents="none"
           />
           <TouchableOpacity
             onPress={onPress}
