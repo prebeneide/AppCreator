@@ -8,8 +8,8 @@ import {
   TextStyle,
   ActivityIndicator,
 } from 'react-native';
-import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
+// import { BlurView } from 'expo-blur';
+// import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme, useIsDark } from '../utils/useTheme';
 import { spacing, radius, typography } from '../tokens';
 
@@ -79,59 +79,37 @@ export function GlassButton({
     return { color: theme.text.primary };
   };
 
-  const gradientColors =
-    variant === 'primary'
-      ? (['#FF6B9D', '#FF8E53', '#C084FC', '#00D4FF'] as const)
-      : (['#3B82F6', '#8B5CF6', '#EC4899'] as const);
-
   return (
-    <View style={[styles.wrapper, disabled && { opacity: 0.5 }, style]}>
-      <LinearGradient
-        colors={[...gradientColors]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={[styles.gradientBorder, { borderRadius: radius.md }]}
-      >
-        <View
-          style={[
-            styles.innerContainer,
-            {
-              borderRadius: radius.md - 1,
-              backgroundColor: isDark
-                ? 'rgba(0, 0, 0, 0.3)'
-                : 'rgba(255, 255, 255, 0.2)',
-            },
-          ]}
-        >
-          <BlurView
-            intensity={isDark ? 20 : 30}
-            tint={isDark ? 'dark' : 'light'}
-            style={[
-              StyleSheet.absoluteFill,
-              {
-                borderRadius: radius.md - 1,
-                overflow: 'hidden',
-              },
-            ]}
-          />
-          <TouchableOpacity
-            onPress={onPress}
-            disabled={disabled || loading}
-            activeOpacity={0.7}
-            style={[StyleSheet.absoluteFill, styles.touchable]}
-          >
-            {loading ? (
-              <ActivityIndicator
-                size="small"
-                color={variant === 'primary' ? '#00D4FF' : theme.text.primary}
-              />
-            ) : (
-              <Text style={[styles.text, getTextStyle(), textStyle]}>{title}</Text>
-            )}
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
-    </View>
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={disabled || loading}
+      activeOpacity={0.7}
+      style={[
+        styles.wrapper,
+        {
+          backgroundColor: isDark ? 'rgba(0, 212, 255, 0.2)' : 'rgba(0, 212, 255, 0.1)',
+          borderWidth: 2,
+          borderColor: '#00D4FF',
+          borderRadius: radius.md,
+          paddingVertical: spacing[3],
+          paddingHorizontal: spacing[4],
+          minHeight: 44,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        disabled && { opacity: 0.5 },
+        style,
+      ]}
+    >
+      {loading ? (
+        <ActivityIndicator
+          size="small"
+          color={variant === 'primary' ? '#00D4FF' : theme.text.primary}
+        />
+      ) : (
+        <Text style={[styles.text, getTextStyle(), textStyle]}>{title}</Text>
+      )}
+    </TouchableOpacity>
   );
 }
 
