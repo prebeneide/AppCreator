@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { useTheme } from '@appcreator/design-system';
 
 export default function App() {
+  const theme = useTheme();
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>AppCreator</Text>
+    <View style={[styles.container, { backgroundColor: theme.background.primary }]}>
+      <Text style={[styles.text, { color: theme.accent.primary }]}>AppCreator</Text>
     </View>
   );
 }
@@ -11,12 +13,10 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
-    color: '#00D4FF',
     fontSize: 24,
   },
 });
