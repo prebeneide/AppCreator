@@ -7,7 +7,10 @@ export default function App() {
   const theme = useTheme();
   return (
     <View style={[styles.container, { backgroundColor: theme.background.primary }]}>
-      <Text style={[styles.text, { color: theme.accent.primary }]}>AppCreator</Text>
+      <Text style={[styles.title, { color: theme.accent.primary }]}>AppCreator</Text>
+      <Text style={[styles.subtitle, { color: theme.text.secondary }]}>
+        {t('app.subtitle')}
+      </Text>
       <GlassButton
         title={t('button.getStarted')}
         onPress={() => Alert.alert(t('app.name'), t('button.getStarted'))}
@@ -24,8 +27,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
+  title: {
     fontSize: 24,
+  },
+  subtitle: {
+    fontSize: 14,
+    marginTop: 4,
   },
   button: {
     marginTop: 24,
