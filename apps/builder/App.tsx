@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme, GlassButton } from '@appcreator/design-system';
 
@@ -10,7 +10,7 @@ export default function App() {
       <Text style={[styles.text, { color: theme.accent.primary }]}>AppCreator</Text>
       <GlassButton
         title={t('button.getStarted')}
-        onPress={() => {}}
+        onPress={() => Alert.alert(t('app.name'), t('button.getStarted'))}
         variant="primary"
         style={styles.button}
       />
