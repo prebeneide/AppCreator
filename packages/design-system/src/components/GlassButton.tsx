@@ -79,21 +79,31 @@ export function GlassButton({
     return { color: theme.text.primary };
   };
 
+  const primaryBg = isDark ? '#00ACC1' : '#0097A7';
+  const primaryBorder = isDark ? '#00D4FF' : '#00838F';
+
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled || loading}
-      activeOpacity={0.7}
+      activeOpacity={0.8}
       style={[
         styles.wrapper,
+        variant === 'primary' && {
+          backgroundColor: primaryBg,
+          borderWidth: 1,
+          borderColor: primaryBorder,
+        },
+        variant !== 'primary' && {
+          backgroundColor: isDark ? 'rgba(0, 212, 255, 0.15)' : 'rgba(0, 151, 167, 0.12)',
+          borderWidth: 1,
+          borderColor: theme.accent.primary,
+        },
         {
-          backgroundColor: isDark ? 'rgba(0, 212, 255, 0.2)' : 'rgba(0, 212, 255, 0.1)',
-          borderWidth: 2,
-          borderColor: '#00D4FF',
-          borderRadius: radius.md,
+          borderRadius: radius.lg,
           paddingVertical: spacing[3],
-          paddingHorizontal: spacing[4],
-          minHeight: 44,
+          paddingHorizontal: spacing[5],
+          minHeight: 48,
           justifyContent: 'center',
           alignItems: 'center',
         },
@@ -132,7 +142,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: typography.fontSize.base,
-    fontWeight: typography.fontWeight.medium,
+    fontWeight: typography.fontWeight.semibold,
     textAlign: 'center',
   },
 });
