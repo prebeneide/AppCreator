@@ -1,8 +1,8 @@
-# Mini-Steps Guide - Ekstremt Små Steg
+# Mini-Steps Guide - Små Steg (pittelitt mer per steg)
 
 ## Prinsipp
 
-**Gjør så lite som mulig hver gang. Hvis du kan dele det opp mer, gjør det.**
+**Små steg, men gjør pittelitt mer per steg.** Ikke ekstremt én-linje-per-gang; heller 2–4 relaterte endringer som hører logisk sammen. Fortsatt én logisk "ting" per steg, test etter hvert steg.
 
 ## Eksempler på Ekstremt Små Steg
 
@@ -53,9 +53,12 @@
 ### Steg 7: Neste feature
 - osv...
 
-## Regel: Hvis du er usikker, gjør mindre
+## Stegstørrelse (oppdatert)
 
-Hvis du tenker "skal jeg gjøre X og Y sammen?" - **NEI, gjør X først, test, så Y.**
+- **Per steg:** 2–4 relaterte endringer som utgjør én logisk forbedring (f.eks. "safe area + padding" eller "header-seksjon med titel og undertittel").
+- **Ikke:** Én linje endring per commit med mindre det er nødvendig for å isolere feil.
+- **Ikke:** Store features i ett steg – fortsatt bryt ned store oppgaver.
+- **Hvis du er usikker:** Gjør mindre; ved feil er det enklere å rulle tilbake.
 
 ## Commit Strategi
 

@@ -2,19 +2,12 @@
 
 ## Core Principle: Extremely Mini-Steps Always
 
-### Rule 1: Extremely Small Steps
-- **ONE tiny change at a time** - the smallest possible unit
-- **One file, one function, one feature** - never combine
-- **Test immediately** after each tiny change
-- If you can break it down further, do it
-- Examples of good mini-steps:
-  - Create empty file
-  - Add one import
-  - Add one function signature (no implementation)
-  - Add one prop to interface
-  - Implement one line of logic
-  - Test that one change
-  - Then move to next tiny step
+### Rule 1: Small Steps (pittelitt mer per steg)
+- **2–4 related changes per step** – one logical improvement (e.g. "safe area + padding", or "header block with title + subtitle").
+- **Not** literally one line per commit unless isolating a bug.
+- **Not** large features in one step – still break big tasks down.
+- **Test immediately** after each step.
+- Examples of a good step: add SafeAreaView + container padding + adjust spacing; or add a header View with title and subtitle styled.
 
 ### Rule 2: Maximum Step Size
 - **One file at a time** - always
