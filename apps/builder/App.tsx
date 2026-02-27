@@ -1,13 +1,30 @@
+import { useState } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useTranslation } from 'react-i18next';
 import { useTheme, useIsDark, GlassButton, spacing } from '@appcreator/design-system';
+import ChatScreen from './src/screens/ChatScreen';
+
+type Screen = 'home' | 'chat';
 
 export default function App() {
+  const [screen, setScreen] = useState<Screen>('home');
   const { t } = useTranslation();
   const theme = useTheme();
   const isDark = useIsDark();
+
+  if (screen === 'chat') {
+    return (
+      <SafeAreaProvider>
+        <View style={[styles.container, { backgroundColor: theme.background.primary }]}>
+          <StatusBar style={isDark ? 'light' : 'dark'} />
+          <ChatScreen onBack={() => setScreen('home')} />
+        </View>
+      </SafeAreaProvider>
+    );
+  }
+
   return (
     <SafeAreaProvider>
       <View style={[styles.container, { backgroundColor: theme.background.primary }]}>
@@ -21,7 +38,7 @@ export default function App() {
           </View>
           <GlassButton
             title={t('button.getStarted')}
-            onPress={() => Alert.alert(t('app.name'), t('button.getStarted'))}
+            onPress={() => setScreen('chat')}
             variant="primary"
             style={styles.button}
           />
