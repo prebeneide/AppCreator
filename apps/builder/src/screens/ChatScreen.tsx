@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme, GlassButton, spacing } from '@appcreator/design-system';
+import { useTheme, GlassButton, spacing, radius } from '@appcreator/design-system';
 import { useTranslation } from 'react-i18next';
+
+interface ChatMessage {
+  id: string;
+  text: string;
+  role: 'user';
+}
 
 interface ChatScreenProps {
   onBack?: () => void;
@@ -12,6 +18,24 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
   const [input, setInput] = useState('');
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      scrollRef.current?.scrollToEnd({ animated: true });
+    }
+  }, [messages.length]);
+
+  const handleSend = () => {
+    const trimmed = input.trim();
+    if (!trimmed) return;
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now().toString(), text: trimmed, role: 'user' as const },
+    ]);
+    setInput('');
+  };
 
   return (
     <SafeAreaView
@@ -38,13 +62,35 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
         keyboardVerticalOffset={0}
       >
         <ScrollView
+          ref={scrollRef}
           style={styles.messageList}
-          contentContainerStyle={styles.messageListContent}
+          contentContainerStyle={[
+            styles.messageListContent,
+            messages.length > 0 && styles.messageListContentWithMessages,
+          ]}
           keyboardShouldPersistTaps="handled"
         >
-          <Text style={[styles.emptyText, { color: theme.text.tertiary }]}>
-            {t('chat.empty')}
-          </Text>
+          {messages.length === 0 ? (
+            <Text style={[styles.emptyText, { color: theme.text.tertiary }]}>
+              {t('chat.empty')}
+            </Text>
+          ) : (
+            messages.map((msg) => (
+              <View
+                key={msg.id}
+                style={[
+                  styles.bubble,
+                  {
+                    backgroundColor: theme.accent.primary + '22',
+                    borderColor: theme.accent.primary + '44',
+                    alignSelf: 'flex-end',
+                  },
+                ]}
+              >
+                <Text style={[styles.bubbleText, { color: theme.text.primary }]}>{msg.text}</Text>
+              </View>
+            ))
+          )}
         </ScrollView>
 
         {/* Input row */}
@@ -67,7 +113,7 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
           />
           <GlassButton
             title={t('chat.send')}
-            onPress={() => setInput('')}
+            onPress={handleSend}
             variant="primary"
             style={styles.sendButton}
           />
@@ -108,6 +154,22 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: spacing[4],
     justifyContent: 'center',
+  },
+  messageListContentWithMessages: {
+    justifyContent: 'flex-start',
+    paddingBottom: spacing[4],
+  },
+  bubble: {
+    maxWidth: '85%',
+    paddingVertical: spacing[3],
+    paddingHorizontal: spacing[4],
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    marginBottom: spacing[3],
+  },
+  bubbleText: {
+    fontSize: 15,
+    lineHeight: 22,
   },
   emptyText: {
     fontSize: 15,
