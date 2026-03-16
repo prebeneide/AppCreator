@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 interface ChatMessage {
   id: string;
   text: string;
-  role: 'user';
+  role: 'user' | 'assistant';
 }
 
 interface ChatScreenProps {
@@ -30,11 +30,15 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
   const handleSend = () => {
     const trimmed = input.trim();
     if (!trimmed) return;
-    setMessages((prev) => [
-      ...prev,
-      { id: Date.now().toString(), text: trimmed, role: 'user' as const },
-    ]);
+    const userMsg: ChatMessage = { id: `u-${Date.now()}`, text: trimmed, role: 'user' };
+    setMessages((prev) => [...prev, userMsg]);
     setInput('');
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        { id: `a-${Date.now()}`, text: t('chat.assistantPlaceholder'), role: 'assistant' as const },
+      ]);
+    }, 1500);
   };
 
   return (
@@ -80,11 +84,17 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
                 key={msg.id}
                 style={[
                   styles.bubble,
-                  {
-                    backgroundColor: theme.accent.primary + '22',
-                    borderColor: theme.accent.primary + '44',
-                    alignSelf: 'flex-end',
-                  },
+                  msg.role === 'user'
+                    ? {
+                        backgroundColor: theme.accent.primary + '22',
+                        borderColor: theme.accent.primary + '44',
+                        alignSelf: 'flex-end',
+                      }
+                    : {
+                        backgroundColor: theme.surface.secondary,
+                        borderColor: theme.border.primary,
+                        alignSelf: 'flex-start',
+                      },
                 ]}
               >
                 <Text style={[styles.bubbleText, { color: theme.text.primary }]}>{msg.text}</Text>

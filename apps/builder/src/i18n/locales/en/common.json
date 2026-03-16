@@ -18,6 +18,7 @@
     "title": "Chat",
     "placeholder": "Describe your app...",
     "send": "Send",
-    "empty": "No messages yet. Describe what you want to build."
+    "empty": "No messages yet. Describe what you want to build.",
+    "assistantPlaceholder": "I'll help you build that. What features do you need?"
   }
 }

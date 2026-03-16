@@ -18,6 +18,7 @@
     "title": "Chat",
     "placeholder": "Beskriv appen din...",
     "send": "Send",
-    "empty": "Ingen meldinger ennå. Beskriv hva du vil bygge."
+    "empty": "Ingen meldinger ennå. Beskriv hva du vil bygge.",
+    "assistantPlaceholder": "Jeg hjelper deg med det. Hvilke funksjoner trenger du?"
   }
 }
