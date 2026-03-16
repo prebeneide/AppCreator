@@ -53,12 +53,13 @@
 ### Steg 7: Neste feature
 - osv...
 
-## Stegstørrelse (oppdatert)
+## Stegstørrelse (moderat – tydelig fremgang)
 
-- **Per steg:** 2–4 relaterte endringer som utgjør én logisk forbedring (f.eks. "safe area + padding" eller "header-seksjon med titel og undertittel").
-- **Ikke:** Én linje endring per commit med mindre det er nødvendig for å isolere feil.
-- **Ikke:** Store features i ett steg – fortsatt bryt ned store oppgaver.
-- **Hvis du er usikker:** Gjør mindre; ved feil er det enklere å rulle tilbake.
+- **Per steg:** Én tydelig forbedring eller del av en feature (f.eks. "hele chat-UI-skjelettet" eller "header + liste + input + knapp").
+- **Omfang:** 5–12 relaterte endringer som sammen gir noe brukeren ser og kan bruke. Vi skal føle fremgang.
+- **Ikke:** Én linje eller 2–3 småting per steg – det blir for tregt.
+- **Ikke:** Hele appen eller mange uavhengige features i ett steg – da mister vi kontroll.
+- **Mål:** Et steg skal gi synlig, nyttig endring uten at det blir vanskelig å feilsøke.
 
 ## Commit Strategi
 

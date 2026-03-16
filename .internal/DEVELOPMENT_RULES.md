@@ -2,12 +2,12 @@
 
 ## Core Principle: Extremely Mini-Steps Always
 
-### Rule 1: Small Steps (pittelitt mer per steg)
-- **2–4 related changes per step** – one logical improvement (e.g. "safe area + padding", or "header block with title + subtitle").
-- **Not** literally one line per commit unless isolating a bug.
-- **Not** large features in one step – still break big tasks down.
+### Rule 1: Moderate Steps (tydelig fremgang per steg)
+- **One clear improvement per step** – e.g. a full chat UI skeleton (header + message area + input + send), or a complete small feature.
+- **Rough size:** 5–12 related changes that together give something visible and usable. We should feel progress.
+- **Not** 1–2 tiny edits per step – too slow.
+- **Not** whole app or many unrelated features in one step – keeps control.
 - **Test immediately** after each step.
-- Examples of a good step: add SafeAreaView + container padding + adjust spacing; or add a header View with title and subtitle styled.
 
 ### Rule 2: Maximum Step Size
 - **One file at a time** - always

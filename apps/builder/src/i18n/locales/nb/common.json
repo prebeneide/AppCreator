@@ -13,5 +13,11 @@
   "language": {
     "en": "Engelsk",
     "nb": "Norsk"
+  },
+  "chat": {
+    "title": "Chat",
+    "placeholder": "Beskriv appen din...",
+    "send": "Send",
+    "empty": "Ingen meldinger ennå. Beskriv hva du vil bygge."
   }
 }
