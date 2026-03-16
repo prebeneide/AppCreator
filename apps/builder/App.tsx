@@ -10,9 +10,10 @@ type Screen = 'home' | 'chat';
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('home');
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const isDark = useIsDark();
+  const currentLang = i18n.language?.startsWith('nb') ? 'nb' : 'en';
 
   if (screen === 'chat') {
     return (
@@ -42,6 +43,20 @@ export default function App() {
             variant="primary"
             style={styles.button}
           />
+          <View style={styles.langRow}>
+            <GlassButton
+              title={t('language.nb')}
+              onPress={() => i18n.changeLanguage('nb')}
+              variant={currentLang === 'nb' ? 'primary' : 'secondary'}
+              style={styles.langButton}
+            />
+            <GlassButton
+              title={t('language.en')}
+              onPress={() => i18n.changeLanguage('en')}
+              variant={currentLang === 'en' ? 'primary' : 'secondary'}
+              style={styles.langButton}
+            />
+          </View>
         </SafeAreaView>
       </View>
     </SafeAreaProvider>
@@ -72,5 +87,14 @@ const styles = StyleSheet.create({
   },
   button: {
     minWidth: 200,
+  },
+  langRow: {
+    flexDirection: 'row',
+    marginTop: spacing[8],
+    gap: spacing[3],
+  },
+  langButton: {
+    minWidth: 0,
+    paddingHorizontal: spacing[4],
   },
 });
