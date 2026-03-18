@@ -1,8 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme, GlassButton, spacing, radius } from '@appcreator/design-system';
 import { useTranslation } from 'react-i18next';
+
+function TypingDots({ anim, color }: { anim: Animated.Value; color: string }) {
+  const opacity = anim.interpolate({ inputRange: [0, 1], outputRange: [0.35, 1] });
+  return (
+    <View style={styles.typingDotsRow}>
+      {[0, 1, 2].map((i) => (
+        <Animated.View
+          key={i}
+          style={[styles.typingDot, { backgroundColor: color, opacity }]}
+        />
+      ))}
+    </View>
+  );
+}
 
 interface ChatMessage {
   id: string;
@@ -19,13 +33,27 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
   const { t } = useTranslation();
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [isAssistantTyping, setIsAssistantTyping] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
+  const dotAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (messages.length > 0) {
+    if (messages.length > 0 || isAssistantTyping) {
       scrollRef.current?.scrollToEnd({ animated: true });
     }
-  }, [messages.length]);
+  }, [messages.length, isAssistantTyping]);
+
+  useEffect(() => {
+    if (!isAssistantTyping) return;
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(dotAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
+        Animated.timing(dotAnim, { toValue: 0, duration: 400, useNativeDriver: true }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [isAssistantTyping, dotAnim]);
 
   const handleSend = () => {
     const trimmed = input.trim();
@@ -33,11 +61,13 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
     const userMsg: ChatMessage = { id: `u-${Date.now()}`, text: trimmed, role: 'user' };
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
+    setIsAssistantTyping(true);
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
         { id: `a-${Date.now()}`, text: t('chat.assistantPlaceholder'), role: 'assistant' as const },
       ]);
+      setIsAssistantTyping(false);
     }, 1500);
   };
 
@@ -74,32 +104,49 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
           ]}
           keyboardShouldPersistTaps="handled"
         >
-          {messages.length === 0 ? (
+          {messages.length === 0 && !isAssistantTyping ? (
             <Text style={[styles.emptyText, { color: theme.text.tertiary }]}>
               {t('chat.empty')}
             </Text>
           ) : (
-            messages.map((msg) => (
-              <View
-                key={msg.id}
-                style={[
-                  styles.bubble,
-                  msg.role === 'user'
-                    ? {
-                        backgroundColor: theme.accent.primary + '22',
-                        borderColor: theme.accent.primary + '44',
-                        alignSelf: 'flex-end',
-                      }
-                    : {
-                        backgroundColor: theme.surface.secondary,
-                        borderColor: theme.border.primary,
-                        alignSelf: 'flex-start',
-                      },
-                ]}
-              >
-                <Text style={[styles.bubbleText, { color: theme.text.primary }]}>{msg.text}</Text>
-              </View>
-            ))
+            <>
+              {messages.map((msg) => (
+                <View
+                  key={msg.id}
+                  style={[
+                    styles.bubble,
+                    msg.role === 'user'
+                      ? {
+                          backgroundColor: theme.accent.primary + '22',
+                          borderColor: theme.accent.primary + '44',
+                          alignSelf: 'flex-end',
+                        }
+                      : {
+                          backgroundColor: theme.surface.secondary,
+                          borderColor: theme.border.primary,
+                          alignSelf: 'flex-start',
+                        },
+                  ]}
+                >
+                  <Text style={[styles.bubbleText, { color: theme.text.primary }]}>{msg.text}</Text>
+                </View>
+              ))}
+              {isAssistantTyping && (
+                <View
+                  style={[
+                    styles.bubble,
+                    styles.typingBubble,
+                    {
+                      backgroundColor: theme.surface.secondary,
+                      borderColor: theme.border.primary,
+                      alignSelf: 'flex-start',
+                    },
+                  ]}
+                >
+                  <TypingDots anim={dotAnim} color={theme.text.secondary} />
+                </View>
+              )}
+            </>
           )}
         </ScrollView>
 
@@ -176,6 +223,20 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     borderWidth: 1,
     marginBottom: spacing[3],
+  },
+  typingBubble: {
+    paddingVertical: spacing[4],
+    paddingHorizontal: spacing[4],
+  },
+  typingDotsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  typingDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
   },
   bubbleText: {
     fontSize: 15,

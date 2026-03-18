@@ -1,19 +1,42 @@
-import { useState } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useTranslation } from 'react-i18next';
 import { useTheme, useIsDark, GlassButton, spacing } from '@appcreator/design-system';
+import { getStoredLanguage, setStoredLanguage } from './src/i18n/config';
 import ChatScreen from './src/screens/ChatScreen';
+import PreviewScreen from './src/screens/PreviewScreen';
 
-type Screen = 'home' | 'chat';
+type Screen = 'home' | 'chat' | 'preview';
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('home');
+  const [languageReady, setLanguageReady] = useState(false);
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const isDark = useIsDark();
   const currentLang = i18n.language?.startsWith('nb') ? 'nb' : 'en';
+
+  useEffect(() => {
+    getStoredLanguage().then((stored) => {
+      if (stored) i18n.changeLanguage(stored);
+      setLanguageReady(true);
+    });
+  }, [i18n]);
+
+  const setLanguage = (lang: 'en' | 'nb') => {
+    i18n.changeLanguage(lang);
+    setStoredLanguage(lang);
+  };
+
+  if (!languageReady) {
+    return (
+      <SafeAreaProvider>
+        <View style={[styles.container, { backgroundColor: theme.background.primary }]} />
+      </SafeAreaProvider>
+    );
+  }
 
   if (screen === 'chat') {
     return (
@@ -21,6 +44,17 @@ export default function App() {
         <View style={[styles.container, { backgroundColor: theme.background.primary }]}>
           <StatusBar style={isDark ? 'light' : 'dark'} />
           <ChatScreen onBack={() => setScreen('home')} />
+        </View>
+      </SafeAreaProvider>
+    );
+  }
+
+  if (screen === 'preview') {
+    return (
+      <SafeAreaProvider>
+        <View style={[styles.container, { backgroundColor: theme.background.primary }]}>
+          <StatusBar style={isDark ? 'light' : 'dark'} />
+          <PreviewScreen onBack={() => setScreen('home')} />
         </View>
       </SafeAreaProvider>
     );
@@ -43,16 +77,22 @@ export default function App() {
             variant="primary"
             style={styles.button}
           />
+          <GlassButton
+            title={t('preview.title')}
+            onPress={() => setScreen('preview')}
+            variant="secondary"
+            style={styles.button}
+          />
           <View style={styles.langRow}>
             <GlassButton
               title={t('language.nb')}
-              onPress={() => i18n.changeLanguage('nb')}
+              onPress={() => setLanguage('nb')}
               variant={currentLang === 'nb' ? 'primary' : 'secondary'}
               style={styles.langButton}
             />
             <GlassButton
               title={t('language.en')}
-              onPress={() => i18n.changeLanguage('en')}
+              onPress={() => setLanguage('en')}
               variant={currentLang === 'en' ? 'primary' : 'secondary'}
               style={styles.langButton}
             />

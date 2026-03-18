@@ -14,6 +14,10 @@
     "en": "English",
     "nb": "Norwegian"
   },
+  "preview": {
+    "title": "Preview",
+    "placeholder": "Your app preview will appear here."
+  },
   "chat": {
     "title": "Chat",
     "placeholder": "Describe your app...",
