@@ -12,6 +12,7 @@ type Screen = 'home' | 'chat' | 'preview';
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('home');
+  const [previewReturn, setPreviewReturn] = useState<'home' | 'chat'>('home');
   const [languageReady, setLanguageReady] = useState(false);
   const { t, i18n } = useTranslation();
   const theme = useTheme();
@@ -43,7 +44,13 @@ export default function App() {
       <SafeAreaProvider>
         <View style={[styles.container, { backgroundColor: theme.background.primary }]}>
           <StatusBar style={isDark ? 'light' : 'dark'} />
-          <ChatScreen onBack={() => setScreen('home')} />
+          <ChatScreen
+            onBack={() => setScreen('home')}
+            onOpenPreview={() => {
+              setPreviewReturn('chat');
+              setScreen('preview');
+            }}
+          />
         </View>
       </SafeAreaProvider>
     );
@@ -54,7 +61,7 @@ export default function App() {
       <SafeAreaProvider>
         <View style={[styles.container, { backgroundColor: theme.background.primary }]}>
           <StatusBar style={isDark ? 'light' : 'dark'} />
-          <PreviewScreen onBack={() => setScreen('home')} />
+          <PreviewScreen onBack={() => setScreen(previewReturn)} />
         </View>
       </SafeAreaProvider>
     );
@@ -79,7 +86,10 @@ export default function App() {
           />
           <GlassButton
             title={t('preview.title')}
-            onPress={() => setScreen('preview')}
+            onPress={() => {
+              setPreviewReturn('home');
+              setScreen('preview');
+            }}
             variant="secondary"
             style={styles.button}
           />

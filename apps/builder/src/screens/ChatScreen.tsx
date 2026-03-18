@@ -1,5 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Animated } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  Animated,
+  Pressable,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme, GlassButton, spacing, radius } from '@appcreator/design-system';
 import { useTranslation } from 'react-i18next';
@@ -26,9 +36,10 @@ interface ChatMessage {
 
 interface ChatScreenProps {
   onBack?: () => void;
+  onOpenPreview?: () => void;
 }
 
-export default function ChatScreen({ onBack }: ChatScreenProps) {
+export default function ChatScreen({ onBack, onOpenPreview }: ChatScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
   const [input, setInput] = useState('');
@@ -78,15 +89,24 @@ export default function ChatScreen({ onBack }: ChatScreenProps) {
     >
       {/* Header */}
       <View style={[styles.header, { borderBottomColor: theme.border.primary }]}>
-        {onBack != null && (
-          <GlassButton
-            title={t('button.cancel')}
-            onPress={onBack}
-            variant="secondary"
-            style={styles.backButton}
-          />
-        )}
+        <View style={styles.headerSide}>
+          {onBack != null && (
+            <GlassButton
+              title={t('button.cancel')}
+              onPress={onBack}
+              variant="secondary"
+              style={styles.backButton}
+            />
+          )}
+        </View>
         <Text style={[styles.title, { color: theme.text.primary }]}>{t('chat.title')}</Text>
+        <View style={[styles.headerSide, styles.headerSideRight]}>
+          {onOpenPreview != null && (
+            <Pressable onPress={onOpenPreview} hitSlop={8} style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}>
+              <Text style={[styles.headerLink, { color: theme.accent.primary }]}>{t('preview.title')}</Text>
+            </Pressable>
+          )}
+        </View>
       </View>
 
       {/* Message area */}
@@ -193,7 +213,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing[4],
     paddingVertical: spacing[3],
     borderBottomWidth: 1,
-    gap: spacing[4],
+  },
+  headerSide: {
+    width: 88,
+    justifyContent: 'center',
+  },
+  headerSideRight: {
+    alignItems: 'flex-end',
   },
   backButton: {
     minWidth: 0,
@@ -203,6 +229,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     flex: 1,
+    textAlign: 'center',
+  },
+  headerLink: {
+    fontSize: 15,
+    fontWeight: '600',
   },
   messageList: {
     flex: 1,
